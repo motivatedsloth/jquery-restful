@@ -71,7 +71,7 @@ Field names of the sort events[start], events[stop] would create an object like:
 
     {events: {start: value1, stop: value2}}
 
-*fromJSON* function will receive the data to load into the form. The context of the form is the jQuery form element. ie this.find(":input"). 
+*fromJSON* function will receive the data to load into the form. The context is the jQuery form element. ie this.find(":input"). 
 
 Note the built in function filters the form elements as such this.find(":input:not(.exclude, button, :submit, :reset)") and follows the same hierarchy as *toJSON*
 
