@@ -14,7 +14,9 @@ load data into form, url is required
     $myform.restful("JSON", "/some/uri/") 
 
 save data from form, url is optional.
+
     $myform.restful("submit", "/some/uri/")
+
 The url to POST to is:
  1. the provided url
  2. the url set in the options
