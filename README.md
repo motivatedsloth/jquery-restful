@@ -31,7 +31,7 @@ delete data on server using the DELETE method. The same url is determined as wit
 
     $myform.restful("remove", "/some/uri/")
 
-Any fields with an "exclude" class are ignored. However changes to them will still trigger an intercept
+Any fields with a ".exclude" class are ignored when loading data or submitting data. However changes to them will still trigger an intercept
 
 ##Options
 
@@ -65,7 +65,9 @@ Any fields with an "exclude" class are ignored. However changes to them will sti
 
 *toJSON* function must return on object or data string suitable for jQuery.post data argument. 
 Default built in function will create a hierarchical object. It filters the form elements as such $elem.find(":input:not(.exclude, button, :submit, :reset)").
-Field names are of the sort events[start], events[stop] would create an object like:
+
+Field names of the sort events[start], events[stop] would create an object like:
+
     {events: {start: value1, stop: value2}}
 
 *fromJSON* function will receive the data to load into the form. The context of the form is the jQuery form element. ie this.find(":input"). Note the built in
