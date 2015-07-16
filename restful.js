@@ -1,6 +1,5 @@
 /*!
  * Restful forms in jQuery v0.0.1
- * http://jquery.com/
  *
  * Copyright Constellation Web Services, LLC
  * http://www.constellationwebservices.com
