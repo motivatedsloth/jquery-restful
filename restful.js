@@ -8,7 +8,6 @@
  * Released under the MIT license
  * http://jquery.org/license
  *
- * Date: 2015-04-28T16:19Z
  */
 
 /**
