@@ -28,37 +28,39 @@
 
         var defaults = {
             message: "You have unsaved changes.",
+            intercept: true,
             onValidate: function(){return true;},
             onSubmit: function(){},
             onFail: function(){ alert("An error occurred while saving the data."); },
             onReset: function(){},
+            onDelete: function(){},
             toJSON: objectify,
             fromJSON: populate,
+            onLoad: function(){},
             uri: ""
         },
         options = $.extend( {}, defaults, opts ),
         dirty = false;
 
         this.data = {};
+        
+        if(options.intercept){
+            $(window).on("beforeunload", intercept);
 
-        $(window).on("beforeunload", intercept);
-
-        this.element.change(makeDirty);
+            this.element.change(makeDirty);
+        }
 
         this.element.on("submit", submit);
 
 
         function submit(ev){
-            var data = options.toJSON($this.element),
-            uri = typeof ev === "string" ? 
-                        ev :
-                        options.uri || $this.element.attr("action");
+            var data = options.toJSON($this.element);
             if(!!ev && !!ev.preventDefault){
                 ev.preventDefault();
             }
             if(options.onValidate.call(this.element, data)){  
                 $.post(
-                    uri,
+                    getUri(ev),
                     data
                         )
                         .done(function(ev){
@@ -71,10 +73,46 @@
             }
             return false;
         }
+        
+        function load(uri){
+            $.getJSON(
+                uri,
+                function(data){
+                    options.fromJSON.call($this.element, data);
+                    options.onLoad($this.element, data);
+                    makeClean();
+                });
+        }
 
         function reset(){
             $this.element[0].reset();
             options.onReset();
+        }
+        
+        function remove(ev){
+            var data = options.toJSON($this.element);
+            if(!!ev && !!ev.preventDefault){
+                ev.preventDefault();
+            }
+             $.ajax(
+                    getUri(ev),
+            {
+                method: "DELETE"
+            }
+                        )
+                        .done(function(ev){
+                            makeClean();
+                            options.onDelete(this.element, data);
+                        })
+                        .fail(function(ev){
+                            options.onFail(this.element, data);
+                        });
+        }
+        
+        function getUri(ev){
+            return typeof ev === "string" ? 
+                        ev :
+                        options.uri || $this.element.attr("action");
         }
 
         function makeDirty(){
@@ -105,17 +143,22 @@
 
         function JSON(json){
             return !!json ?
-                options.fromJSON(json):
+                typeof json === 'string' ?
+                    load(json) :  
+                    options.fromJSON.call($this.element, json):
                 options.toJSON($this.element);
         }
 
         /**
          * 
-         * @param {Object} json
+         * @param {Object|String} json data object or uri string to fetch data
          * @returns {undefined}
          */
         function populate(json){
-            var $elements = $this.element.find(":input:not(.exclude, button, :submit, :reset)"), 
+            if(typeof json === 'string'){
+                return load(json);
+            }
+            var $elements = this.find(":input:not(.exclude, button, :submit, :reset)"), 
             names = []; //get all unique names of inputs
             $elements.each(function(){
                 if(names.indexOf(this.name) === -1){
@@ -220,14 +263,15 @@
         return {
             submit: submit,
             reset: reset,
+            remove: remove,
             JSON: JSON
         }
     }
 
     /**
      * 
-     * @param {Object|String} opts options object to initialize, string to perform action, "submit", "reset", "JSON"
-     * @param {Any} val value to pass to requested action, submit -> uri, reset -> none, JSON -> JSON|Object
+     * @param {Object|String} opts options object to initialize, string to perform action, "submit", "reset", "remove", "JSON"
+     * @param {Any} val value to pass to requested action, submit -> uri, reset -> none, remove -> uri JSON -> JSON|Object
      * @returns {town_L100.$.fn@call;each}
      */
     $.fn.restful = function(opts, val){
@@ -237,6 +281,7 @@
                 switch(opts){
                     case "submit":
                     case "reset":
+                    case "remove":
                     case "JSON":
                         data[opts](val);
                 }
