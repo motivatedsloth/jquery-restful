@@ -6,21 +6,22 @@ Intercept when leaving page with unsaved data
 ##Usage
 
 initialize form
-    
+    var $myform = $("form")
     $myform.restful(); 
 
 load data into form, url is required
 
     $myform.restful("JSON", "/some/uri/") 
 
-save data from form, url is optional. The url to POST to is:
+save data from form, url is optional.
+    $myform.restful("submit", "/some/uri/")
+The url to POST to is:
  1. the provided url
  2. the url set in the options
  3. the action attribute on the form
 
-    $myform.restful("submit", "/some/uri/")
 
-resets the form
+reset the form
 
     $myform.restful("reset") 
 
