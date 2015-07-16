@@ -4,30 +4,29 @@ Use to make a form RESTful friendly
 GET, POST, DELETE methods,
 Intercept when leaving page with unsaved data
 ##Usage
-var $myform = $("form")
 
 initialize form
-
-$myform.restful(); 
+    
+    $myform.restful(); 
 
 load data into form, url is required
 
-$myform.restful("JSON", "/some/uri/") 
+    $myform.restful("JSON", "/some/uri/") 
 
 save data from form, url is optional. The url to POST to is:
-1. the provided url
-2. the url set in the options
-3. the action attribute on the form
+ 1. the provided url
+ 2. the url set in the options
+ 3. the action attribute on the form
 
-$myform.restful("submit", "/some/uri/")
+    $myform.restful("submit", "/some/uri/")
 
 resets the form
 
-$myform.restful("reset") //reset form
+    $myform.restful("reset") 
 
 delete data on server using the DELETE method. The same url is determined as with POST
 
-$myform.restful("remove", "/some/uri/")
+    $myform.restful("remove", "/some/uri/")
 
 Any fields with an "exclude" class are ignored. However changes to them will still trigger an intercept
 
