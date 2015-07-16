@@ -6,7 +6,7 @@
  * http://www.constellationwebservices.com
  * 
  * Released under the MIT license
- * http://jquery.org/license
+ * https://github.com/motivatedsloth/jquery-restful/blob/master/LICENSE
  *
  */
 
