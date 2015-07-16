@@ -17,7 +17,7 @@ save data from form, url is optional.
 
     $myform.restful("submit", "/some/uri/")
 
-The url to POST to is:
+The url used to POST:
  1. the provided url
  2. the url set in the options
  3. the action attribute on the form
