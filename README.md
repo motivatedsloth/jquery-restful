@@ -64,14 +64,16 @@ Any fields with a ".exclude" class are ignored when loading data or submitting d
 *onDelete* function
 
 *toJSON* function must return on object or data string suitable for jQuery.post data argument. 
-Default built in function will create a hierarchical object. It filters the form elements as such $elem.find(":input:not(.exclude, button, :submit, :reset)").
+
+Built in function will create a hierarchical object. It filters the form elements as such $elem.find(":input:not(.exclude, button, :submit, :reset)").
 
 Field names of the sort events[start], events[stop] would create an object like:
 
     {events: {start: value1, stop: value2}}
 
-*fromJSON* function will receive the data to load into the form. The context of the form is the jQuery form element. ie this.find(":input"). Note the built in
-function filters the form elements as such this.find(":input:not(.exclude, button, :submit, :reset)")
+*fromJSON* function will receive the data to load into the form. The context of the form is the jQuery form element. ie this.find(":input"). 
+
+Note the built in function filters the form elements as such this.find(":input:not(.exclude, button, :submit, :reset)") and follows the same hierarchy as *toJSON*
 
 *onLoad* function to run after data from server is loaded into form. Can be used to clean up data, or to manipulate the form as needed.
 
