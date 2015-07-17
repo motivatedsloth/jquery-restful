@@ -81,6 +81,7 @@ Field names of the sort events[start], events[stop] would create an object like:
 
 Note the built in function filters the form elements as such this.find(":input:not(.exclude, button, :submit, :reset)") and follows the same hierarchy as *toJSON*
 
-*onLoad* function to run after data from server is loaded into form. Can be used to clean up data, or to manipulate the form as needed. This function is *not* called when a data object is provided.
+*onLoad* function to run after data from server is loaded into form. Can be used to clean up data, or to manipulate the form as needed. 
+This function is *not* called when a data object is provided.
 
 *uri* -optional- the url to use for submit and remove actions. If not provided the form action will be used
