@@ -62,11 +62,12 @@
                 $.post(
                     getUri(ev),
                     data
+                            ).done(
+                            function(dt, str, jq){
+                                makeClean();
+                                options.onSubmit(this.element, data, jq);
+                            }
                         )
-                        .done(function(ev){
-                            makeClean();
-                            options.onSubmit(this.element, data);
-                        })
                         .fail(function(ev){
                             options.onFail(this.element, data);
                         });
@@ -171,6 +172,9 @@
                     tmp = tmp[name[x]] !== undefined ?
                             tmp[name[x]] :
                             "";
+                    if(!!tmp.getHours){ //we have a date....
+                        tmp = tmp.toJSON();
+                    }
                 }
                 $elements.filter("[name='" + curr + "']").val(tmp).change();
             });
