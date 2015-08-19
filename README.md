@@ -85,3 +85,5 @@ Note the built in function filters the form elements as such this.find(":input:n
 This function is *not* called when a data object is provided.
 
 *uri* -optional- the url to use for submit and remove actions. If not provided the form action will be used
+
+*Note:* the onValidate, onSubmit, onFail, onReset, onDelete functions are all called in the context of the restful object. This exposes this.dirty and this.element. To prevent the page intercept set this.dirty to false.

@@ -39,10 +39,9 @@
             onLoad: function(){},
             uri: ""
         },
-        options = $.extend( {}, defaults, opts ),
-        dirty = false;
+        options = $.extend( {}, defaults, opts );
 
-        this.data = {};
+        this.dirty = false;
         
         if(options.intercept){
             $(window).on("beforeunload", intercept);
@@ -58,17 +57,16 @@
             if(!!ev && !!ev.preventDefault){
                 ev.preventDefault();
             }
-            if(options.onValidate.call(this.element, data)){  
+            if(options.onValidate.call($this, data)){  
                 $.post(
                     getUri(ev),
                     data
-                        )
-                        .done(function(ev){
+                        ).done(function(dt, str, jq){
                             makeClean();
-                            options.onSubmit(this.element, data);
+                            options.onSubmit.call($this, data, jq);
                         })
                         .fail(function(ev){
-                            options.onFail(this.element, data);
+                            options.onFail.call($this, data, ev);
                         });
             }
             return false;
@@ -78,8 +76,8 @@
             $.getJSON(
                 uri,
                 function(data){
-                    options.fromJSON.call($this.element, data);
-                    options.onLoad($this.element, data);
+                    options.fromJSON(data);
+                    options.onLoad(data);
                     makeClean();
                 });
         }
@@ -102,10 +100,10 @@
                         )
                         .done(function(ev){
                             makeClean();
-                            options.onDelete(this.element, data);
+                            options.onDelete.call($this, data);
                         })
                         .fail(function(ev){
-                            options.onFail(this.element, data);
+                            options.onFail.call($this, data);
                         });
         }
         
@@ -116,11 +114,11 @@
         }
 
         function makeDirty(){
-            dirty = true;
+            $this.dirty = true;
         }
 
         function makeClean(){
-            dirty = false;
+            $this.dirty = false;
         }
 
         /**
@@ -130,14 +128,14 @@
          */
         function intercept(ev){  
             if(!!ev){
-                if(dirty){
+                if($this.dirty){
                     ev.returnValue = options.message;
                     return options.message;
                 }else{
                     return;
                 }
             }else{
-                return dirty;
+                return $this.dirty;
             }
         }
 
@@ -145,8 +143,8 @@
             return !!json ?
                 typeof json === 'string' ?
                     load(json) :  
-                    options.fromJSON.call($this.element, json):
-                options.toJSON($this.element);
+                    options.fromJSON(json):
+                    options.toJSON($this.element);
         }
 
         /**
@@ -158,7 +156,7 @@
             if(typeof json === 'string'){
                 return load(json);
             }
-            var $elements = this.find(":input:not(.exclude, button, :submit, :reset)"), 
+            var $elements = $this.element.find(":input:not(.exclude, button, :submit, :reset)"), 
             names = []; //get all unique names of inputs
             $elements.each(function(){
                 if(names.indexOf(this.name) === -1){
@@ -172,7 +170,12 @@
                             tmp[name[x]] :
                             "";
                 }
-                $elements.filter("[name='" + curr + "']").val(tmp).change();
+                var $elem = $elements.filter("[name='" + curr + "']");
+                if( ($elem.is(":checkbox") || $elem.is(":radio")) && !tmp.push ){
+                    $elem.val([tmp]);
+                }else{
+                    $elem.val(tmp).change();
+                }
             });
             makeClean();
         }
@@ -264,8 +267,9 @@
             submit: submit,
             reset: reset,
             remove: remove,
-            JSON: JSON
-        }
+            JSON: JSON,
+            dirty: this.dirty
+        };
     }
 
     /**
