@@ -169,6 +169,9 @@
                     tmp = tmp[name[x]] !== undefined ?
                             tmp[name[x]] :
                             "";
+                    if(!!tmp.getHours){ //we have a date....
+                        tmp = tmp.toJSON();
+                    }
                 }
                 var $elem = $elements.filter("[name='" + curr + "']");
                 if( ($elem.is(":checkbox") || $elem.is(":radio")) && !tmp.push ){
