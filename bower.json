@@ -1,22 +1,22 @@
 {
-  "name": "jquery-restful",
-  "homepage": "https://github.com/motivatedsloth/jquery-restful",
-  "description": "Restful form handling with jQuery",
-  "main": "restful.js",
-  "moduleType": [],
-  "keywords": [
-    "RESTful"
-  ],
-  "authors": [
-    "Alan Buss"
-  ],
-  "license": "MIT",
-  "ignore": [
-    "**/.*",
-    "bower_components",,
-    "tests"
-  ],
-  "dependencies": {
-    "jquery": "~1.11"
-  }
+	"name": "jquery-restful",
+	"homepage": "https://github.com/motivatedsloth/jquery-restful",
+	"description": "Restful form handling with jQuery",
+	"main": "restful.js",
+	"moduleType": [],
+	"keywords": [
+		"RESTful"
+	],
+	"authors": [
+		"Alan Buss"
+	],
+	"license": "MIT",
+	"ignore": [
+		"**/.*",
+		"bower_components",
+		"tests"
+	],
+	"dependencies": {
+		"jquery": ">=1.11"
+	}
 }
