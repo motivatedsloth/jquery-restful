@@ -166,7 +166,7 @@
             names.map(function(curr, idx, arr){
                 var name = curr.replace("]", "").split("["), tmp = json;
                 for(var x = 0; x < name.length; x++){
-                    tmp = tmp[name[x]] !== undefined ?
+                    tmp = tmp[name[x]] !== undefined && tmp[name[x]] !== null  ?
                             tmp[name[x]] :
                             "";
                     if(!!tmp.getHours){ //we have a date....
